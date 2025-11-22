@@ -1,10 +1,13 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState, useEffect, useRef, type CSSProperties } from "react";
+import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const categories = ["All", "Hoodies", "T-shirts", "Vinyls"] as const;
 
 type Category = (typeof categories)[number];
+
+type SortOption = "alphabetical" | "price-high-low" | "price-low-high";
 
 const heroImage =
   "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=2000&q=80";
@@ -62,11 +65,64 @@ const merchGrid = [
 
 const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>("All");
+  const [sortOption, setSortOption] = useState<SortOption>("alphabetical");
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const sortDropdownRef = useRef<HTMLDivElement>(null);
 
-  const filteredMerch = useMemo(() => {
-    if (selectedCategory === "All") return merchGrid;
-    return merchGrid.filter((item) => item.category === selectedCategory);
-  }, [selectedCategory]);
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    };
+
+    if (isSortOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSortOpen]);
+
+  // Helper function to extract price as number
+  const getPriceNumber = (priceString: string): number => {
+    return parseInt(priceString.replace("$", ""), 10);
+  };
+
+  const filteredAndSortedMerch = useMemo(() => {
+    // First filter by category
+    let filtered = selectedCategory === "All" 
+      ? [...merchGrid] 
+      : merchGrid.filter((item) => item.category === selectedCategory);
+    
+    // Then sort
+    switch (sortOption) {
+      case "alphabetical":
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "price-high-low":
+        filtered.sort((a, b) => getPriceNumber(b.price) - getPriceNumber(a.price));
+        break;
+      case "price-low-high":
+        filtered.sort((a, b) => getPriceNumber(a.price) - getPriceNumber(b.price));
+        break;
+    }
+    
+    return filtered;
+  }, [selectedCategory, sortOption]);
+
+  const getSortLabel = () => {
+    switch (sortOption) {
+      case "alphabetical":
+        return "Alphabetically";
+      case "price-high-low":
+        return "Price: High to Low";
+      case "price-low-high":
+        return "Price: Low to High";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -110,29 +166,92 @@ const Store = () => {
 
         <section className="relative z-10 w-full pb-24">
         <div className="-mt-12 w-full border-t border-red-600/20 bg-black">
-          <div className="flex flex-wrap items-center justify-center gap-3 border-b border-red-600/20 pb-6 pt-6 px-4">
-            {categories.map((category) => {
-              const isActive = category === selectedCategory;
-              return (
+          <div className="border-b border-red-600/20 pb-6 pt-6 px-4">
+            {/* Sort Button and Categories on Same Line */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {/* Categories */}
+              {categories.map((category) => {
+                const isActive = category === selectedCategory;
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`rounded-full px-8 py-3 text-base font-black uppercase tracking-widest transition duration-300 sm:text-lg ${
+                      isActive
+                        ? "bg-red-600 text-white shadow-[0_10px_40px_rgba(220,38,38,0.3)]"
+                        : "border-2 border-red-600/50 text-white hover:border-red-600 hover:text-red-600"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                );
+              })}
+              
+              {/* Sort Dropdown Button */}
+              <div className="relative" ref={sortDropdownRef}>
                 <button
-                  key={category}
                   type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`rounded-full px-8 py-3 text-base font-black uppercase tracking-widest transition duration-300 sm:text-lg ${
-                    isActive
-                      ? "bg-red-600 text-white shadow-[0_10px_40px_rgba(220,38,38,0.3)]"
-                      : "border-2 border-red-600/50 text-white hover:border-red-600 hover:text-red-600"
-                  }`}
+                  onClick={() => setIsSortOpen(!isSortOpen)}
+                  className="flex items-center justify-center gap-2 rounded-full px-8 py-3 text-base font-black uppercase tracking-widest transition duration-300 sm:text-lg border-2 border-red-600/50 text-white hover:border-red-600 hover:text-red-600"
                 >
-                  {category}
+                  Sort: {getSortLabel()}
+                  <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isSortOpen ? "rotate-180" : ""}`} />
                 </button>
-              );
-            })}
+                
+                {/* Dropdown Menu */}
+                {isSortOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-black border-2 border-red-600/50 rounded-lg shadow-lg z-50">
+                    <div className="flex flex-col p-2">
+                      <button
+                        onClick={() => {
+                          setSortOption("alphabetical");
+                          setIsSortOpen(false);
+                        }}
+                        className={`text-left px-4 py-3 rounded-lg font-bold uppercase tracking-wide transition duration-300 ${
+                          sortOption === "alphabetical"
+                            ? "bg-red-600 text-white"
+                            : "text-white hover:text-red-600 hover:bg-red-600/10"
+                        }`}
+                      >
+                        Alphabetically
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSortOption("price-high-low");
+                          setIsSortOpen(false);
+                        }}
+                        className={`text-left px-4 py-3 rounded-lg font-bold uppercase tracking-wide transition duration-300 ${
+                          sortOption === "price-high-low"
+                            ? "bg-red-600 text-white"
+                            : "text-white hover:text-red-600 hover:bg-red-600/10"
+                        }`}
+                      >
+                        Price: High to Low
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSortOption("price-low-high");
+                          setIsSortOpen(false);
+                        }}
+                        className={`text-left px-4 py-3 rounded-lg font-bold uppercase tracking-wide transition duration-300 ${
+                          sortOption === "price-low-high"
+                            ? "bg-red-600 text-white"
+                            : "text-white hover:text-red-600 hover:bg-red-600/10"
+                        }`}
+                      >
+                        Price: Low to High
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="mt-10 grid gap-0 sm:grid-cols-2 lg:grid-cols-3 w-full">
-            {filteredMerch.map((item) => (
+            {filteredAndSortedMerch.map((item) => (
               <article
                 key={item.id}
                 className="group relative overflow-hidden"
