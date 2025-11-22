@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef, type CSSProperties } from "react";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,7 +17,7 @@ export const merchGrid = [
   {
     id: "hoodie-midnight",
     name: "Midnight Signal Hoodie",
-    price: "$68",
+    price: "₹9,000",
     category: "Hoodies",
     image:
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80",
@@ -24,7 +25,7 @@ export const merchGrid = [
   {
     id: "hoodie-amber",
     name: "Amber Pulse Hoodie",
-    price: "$72",
+    price: "₹6,000",
     category: "Hoodies",
     image:
       "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=80",
@@ -32,7 +33,7 @@ export const merchGrid = [
   {
     id: "tee-neon",
     name: "Neon Echo Tee",
-    price: "$42",
+    price: "₹5,000",
     category: "T-shirts",
     image:
       "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80",
@@ -40,7 +41,7 @@ export const merchGrid = [
   {
     id: "tee-slate",
     name: "Slate Frequency Tee",
-    price: "$45",
+    price: "₹4,800",
     category: "T-shirts",
     image:
       "https://images.unsplash.com/photo-1484519332611-516457305ff6?auto=format&fit=crop&w=900&q=80",
@@ -48,7 +49,7 @@ export const merchGrid = [
   {
     id: "vinyl-hologram",
     name: "Hologram Nights Vinyl",
-    price: "$30",
+    price: "₹4,900",
     category: "Vinyls",
     image:
       "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80",
@@ -56,7 +57,7 @@ export const merchGrid = [
   {
     id: "vinyl-aurora",
     name: "Aurora Live Sessions",
-    price: "$34",
+    price: "₹4,100",
     category: "Vinyls",
     image:
       "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80",
@@ -142,7 +143,10 @@ const Store = () => {
         <div className="relative flex w-full max-w-5xl flex-col items-center text-center px-4 sm:px-10">
           <div className="relative">
             <div className="text-[18vw] font-black leading-none tracking-[0.12em] text-transparent sm:text-[12vw] lg:text-[9vw]">
-              <span
+              <motion.span
+                initial={{ y: 48, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
                 className="block bg-[image:var(--hero-img)] bg-cover bg-center bg-no-repeat bg-clip-text text-transparent drop-shadow-[0_15px_45px_rgba(0,0,0,0.9)]"
                 style={
                   {
@@ -151,16 +155,12 @@ const Store = () => {
                 }
               >
                 MERCHANDISE
-              </span>
+              </motion.span>
             </div>
             <div className="absolute inset-0 -z-10 blur-[120px] opacity-70">
               <div className="h-full w-full bg-gradient-to-r from-[#f97316]/60 via-transparent to-[#f97316]/60" />
             </div>
           </div>
-          <p className="mt-6 max-w-xl text-base text-black/80 sm:text-lg font-medium">
-            Limited drops for the urban music faithful. Built for nightfall,
-            basslines, and sweat-soaked encores.
-          </p>
         </div>
         </section>
 
