@@ -1,59 +1,59 @@
+import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
 import heroImage from "@/assets/hero-ikka.jpg";
 import ikkaImage from "@/assets/artist-ikka-card.jpg";
 import ragaImage from "@/assets/artist-raga-card.jpg";
 import pantherImage from "@/assets/artist-panther-card.jpg";
 import partnerLogo from "@/assets/partner-logo.png";
+import { merchGrid } from "@/pages/Store";
 
-const ArtistCard = ({ image, name, subtitle, label, link }: {
+type ArtistCardProps = {
   image: string;
   name: string;
   subtitle: string;
   label?: string;
   link: string;
-}) => {
+};
+
+type MerchCardProps = {
+  image: string;
+  title: string;
+  description: string;
+  href?: string;
+};
+
+const MerchCard: React.FC<MerchCardProps> = ({ image, title, description, href = "/store" }) => {
   return (
-    <div className="group relative overflow-hidden rounded-lg">
-      <div className="aspect-[3/4] overflow-hidden">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+    <a href={href} className="group block rounded-2xl overflow-hidden bg-black shadow-lg">
+      <div className="relative">
+        <img src={image} alt={title} className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute left-6 bottom-6 z-10">
+          <h3 className="text-2xl font-extrabold uppercase tracking-wider text-white">{title}</h3>
+          <p className="mt-1 text-sm text-red-500 font-bold">Shop now</p>
+        </div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6">
-        {label && (
-          <p className="text-white/90 text-sm font-semibold mb-1 tracking-wide">{label}</p>
-        )}
-        <h3 className="text-white text-2xl lg:text-3xl font-bold mb-2">{name}</h3>
-        <p className="text-white/80 text-sm mb-4">{subtitle}</p>
-        <Button
-          variant="outline"
-          className="w-full bg-white/10 text-white border-white/30 hover:bg-white hover:text-primary backdrop-blur-sm"
-        >
-          See more
-        </Button>
+      <div className="px-6 py-6 bg-black">
+        <p className="text-sm text-white/80">{description}</p>
       </div>
-    </div>
+    </a>
   );
 };
 
-import { useEffect, useState } from "react";
-
-const Index = () => {
+const Index2: React.FC = () => {
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setHeroLoaded(true), 80);
+    const t = setTimeout(() => setHeroLoaded(true), 120);
     return () => clearTimeout(t);
   }, []);
 
-  const images = [heroImage, heroImage, heroImage, heroImage];
-
-  const artists = [
+  const artists: ArtistCardProps[] = [
     {
       image: ikkaImage,
       name: "IKKA",
@@ -79,41 +79,50 @@ const Index = () => {
     <div className="min-h-screen bg-black text-white">
       <Header />
       <main>
-        {/* Hero — big off-center-left image with overlay text */}
-        <section className="relative isolate min-h-[110vh] lg:min-h-[120vh] overflow-hidden">
-          {/* Large image positioned off-center left */}
-          <div className="absolute top-0 left-0 h-full w-[70%] lg:w-[65%] -translate-x-6 lg:-translate-x-12">
+        {/* Hero — centered image with text placed left-of-center */}
+        <section className="relative isolate min-h-[110vh] lg:min-h-[120vh] overflow-hidden pt-28 lg:pt-28">
+          {/* Centered full-bleed image */}
+          <div className="absolute inset-0 h-full w-full">
             <img
               src={heroImage}
               alt="IKKA hero"
-              className="h-full w-full object-cover object-left transition-transform duration-700 will-change-transform"
+              className="h-full w-full object-cover object-center transition-transform duration-700 will-change-transform"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
           </div>
 
-          {/* Decorative red accent on the right */}
-          <div className="absolute inset-y-0 right-0 w-1/12 bg-red-600/40 blur-lg opacity-60" />
-
-          {/* Content overlay positioned above image, slightly right so text sits on image */}
-          <div className="relative z-10 flex min-h-[110vh] lg:min-h-[120vh] items-center">
-            <div className="container mx-auto px-6 lg:px-12">
-              <div className="max-w-3xl pl-4 lg:pl-12">
-                <h1
-                  className={`font-black tracking-tight text-white leading-[0.85] -mb-2 text-[9rem] sm:text-[8rem] md:text-[12rem] lg:text-[14rem] transition-transform duration-700 ${
-                    heroLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-                  }`}
+          {/* Content overlay: text block positioned left-of-center */}
+          <div className="relative z-10 min-h-[110vh] lg:min-h-[120vh] pt-28 lg:pt-40">
+            <div className="container mx-auto px-6 lg:px-12 relative h-full">
+              <div className="absolute left-6 lg:left-20 top-1/2 lg:top-[58%] -translate-y-1/2 max-w-3xl">
+                <motion.h1
+                  initial={{ y: 48, opacity: 0 }}
+                  animate={heroLoaded ? { y: 0, opacity: 1 } : {}}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  className="font-black tracking-tight text-white leading-[0.85] -mb-2 text-[10rem] sm:text-[9rem] md:text-[14rem] lg:text-[16rem]"
                   style={{ lineHeight: 0.9 }}
                 >
                   IKKA
-                </h1>
+                </motion.h1>
 
-                <p className={`mt-4 text-xl lg:text-2xl font-semibold text-red-500 uppercase tracking-widest transition-all duration-700 ${heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+                <p
+                  className={`mt-4 text-2xl lg:text-3xl font-semibold text-red-500 uppercase tracking-widest transition-all duration-700 ${
+                    heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  }`}
+                >
                   IKKA DROP 01 COMING SOON
                 </p>
 
-                <div className={`mt-8 ${heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} transition-all duration-700`}> 
-                  <Button size="lg" className="bg-red-600 text-white hover:bg-red-700 rounded-full px-8 py-4 font-bold">
-                    CHECK NOW
+                <div
+                  className={`mt-8 ${
+                    heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  } transition-all duration-700`}
+                >
+                  <Button
+                    size="lg"
+                    aria-label="Check out"
+                    className="cta-diagonal hover:text-black hover:bg-red-600 text-white rounded-md px-10 py-10 font-extrabold uppercase tracking-wider shadow-[0_10px_30px_rgba(220,38,38,0.18)] transition-colors duration-200 text-3xl lg:text-3xl"
+                  >
+                    CHECK OUT
                   </Button>
                 </div>
               </div>
@@ -121,27 +130,46 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Image Gallery */}
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {images.map((img, index) => (
-                <div key={index} className="aspect-video rounded-lg overflow-hidden">
-                  <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                </div>
-              ))}
+        {/* Video Section: player spans full width; supporting text constrained */}
+        <section className="w-full overflow-hidden bg-black">
+          <div className="w-full">
+            {/* Full-width player (spans 100% to sides) */}
+            <div className="w-full overflow-hidden">
+              <video
+                className="w-full h-[60vh] md:h-[70vh] lg:h-[80vh] object-cover"
+                src={"REPLACE_WITH_VIDEO_URL.mp4"}
+                autoPlay
+                muted
+                loop
+                controls
+                playsInline
+              />
+            </div>
+
+            {/* Supporting text constrained to container width */}
+            <div className="container mx-auto px-4 py-6">
+              <p className="text-center text-sm text-white/70">
+                Watch on <a href="REPLACE_WITH_VIDEO_URL.mp4" target="_blank" rel="noreferrer" className="text-red-500 underline">Direct Link</a>
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Merch Store */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12 text-foreground">Explore our Merch Store</h2>
+        
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Merch Store (revamped cards) */}
+        <section className="py-20 bg-black">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl lg:text-5xl font-black text-center mb-6 text-white">Merchandise</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {artists.map((artist, index) => (
-                <ArtistCard key={index} {...artist} />
+                <MerchCard
+                  key={index}
+                  image={artist.image}
+                  title={artist.name}
+                  description={artist.subtitle || "Exclusive merch drop — limited quantities available."}
+                  href="/store"
+                />
               ))}
             </div>
           </div>
@@ -166,37 +194,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Video Section */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="w-full h-px bg-border mb-12" />
-
-            <h2 className="text-3xl lg:text-4xl font-bold text-center mb-8 text-foreground">Check out crazy tracks</h2>
-
-            <div className="max-w-4xl mx-auto">
-              <div className="aspect-video bg-black rounded-lg overflow-hidden mb-6">
-                <div className="w-full h-full flex items-center justify-center text-white">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold mb-2">IKKA: Interview</h3>
-                    <p className="text-sm text-white/70">Video Player</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <h3 className="text-xl font-bold mb-4 text-foreground">IKKA: Interview</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Fab Entertainment presents the official video of the song "Interview", based on Ikka's real life story.</p>
-                <p className="text-muted-foreground text-xs mt-4 leading-relaxed">Song : Interview | Artist : Ikka | Lyrics : Ikka | Composition: Ikka | Producer : Arun Tanwar | Music By : JSL | Directed By : Inflict | D.O.P : Vishal Anand | Label : Fab Entertainment | Production : Purple Sparks Media | Online Promotion: ST Network</p>
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-border mt-12" />
-          </div>
-        </section>
+        
       </main>
       <Footer />
     </div>
   );
 };
 
-export default Index;
+export default Index2;

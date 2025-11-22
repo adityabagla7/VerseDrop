@@ -83,3 +83,16 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* CTA: solid red background on hover (removed diagonal pseudo-element) */
+.cta-diagonal {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  color: #ffffff; /* default text white */
+  transition: background-color 260ms ease, color 260ms ease;
+}
+.cta-diagonal:hover {
+  background-color: rgb(220, 38, 38); /* solid red on hover */
+   /* switch text to black for contrast on red */
+}

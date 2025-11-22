@@ -12,7 +12,7 @@ type SortOption = "alphabetical" | "price-high-low" | "price-low-high";
 const heroImage =
   "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=2000&q=80";
 
-const merchGrid = [
+export const merchGrid = [
   {
     id: "hoodie-midnight",
     name: "Midnight Signal Hoodie",
