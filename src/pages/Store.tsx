@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import storeHero from "../assets/storehero.jpeg";
+import storeHero from "@/assets/storehero.jpeg";
 
 const categories = ["All", "Hoodies", "T-shirts"] as const;
 
