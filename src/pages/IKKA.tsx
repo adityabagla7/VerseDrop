@@ -1,7 +1,13 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ikkaVideo from "../assets/ikkavideo.mp4";
+import bloodisbetter from "../assets/bloodisbetter.webp";
+import fubu from "../assets/fubu.webp";
+import woh from "../assets/WOH.jpeg";
+
 
 const IKKA = () => {
 	return (
@@ -65,7 +71,7 @@ const IKKA = () => {
 					<div className="w-full overflow-hidden">
 						<video
 							className="w-full h-[60vh] md:h-[70vh] lg:h-[80vh] object-cover"
-							src={"src/assets/ikkavideo.mp4"}
+							src={ikkaVideo}
 							autoPlay
 							muted
 							loop
@@ -84,19 +90,19 @@ const IKKA = () => {
 			      {[
 			        {
 			          name: "Blood Is Better Than Tears",
-			          cover: "src/assets/bloodisbetter.webp", // Replace with real cover
+					  cover: bloodisbetter, // imported
 			          spotify: "https://open.spotify.com/album/49ZMHYxRhvlD37JZ14T1Fl",
 			          barcode: "src/assets/Spotify_Code.svg" // Replace with real barcode
 			        },
 			        {
 			          name: "FUBU",
-			          cover: "src/assets/fubu.webp", // Replace with real cover
+					  cover: fubu, // imported
 			          spotify: "https://open.spotify.com/album/1gMI7E8geD2zjlDj9oTIp1",
 			          barcode: "https://i.ibb.co/6bQ7QpT/spotify-barcode.png" // Replace with real barcode
 			        },
 			        {
 			          name: "WOH",
-			          cover: "src/assets/WOH.jpeg", // Replace with real cover
+					  cover: woh, // imported
 			          spotify: "https://open.spotify.com/album/0hYH2JNegSbU72fmNnQ3LW ",
 			          barcode: "https://i.ibb.co/6bQ7QpT/spotify-barcode.png" // Replace with real barcode
 			        }

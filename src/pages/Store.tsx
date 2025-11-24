@@ -1,8 +1,10 @@
+
 import { useMemo, useState, useEffect, useRef, type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import storeHero from "../assets/storehero.jpeg";
 
 const categories = ["All", "Hoodies", "T-shirts"] as const;
 
@@ -10,8 +12,7 @@ type Category = (typeof categories)[number];
 
 type SortOption = "alphabetical" | "price-high-low" | "price-low-high";
 
-const heroImage =
-  "src/assets/storehero.jpeg";
+const heroImage = storeHero;
 
 export const merchGrid = [
   {
