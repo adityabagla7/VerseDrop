@@ -32,32 +32,32 @@ const Index2: React.FC = () => {
       <Header />
       <main>
         {/* Hero — centered image with text placed left-of-center */}
-        <section className="relative isolate min-h-[110vh] lg:min-h-[120vh] overflow-hidden pt-28 lg:pt-28">
+        <section className="relative isolate min-h-[36vh] sm:min-h-[110vh] lg:min-h-[120vh] overflow-hidden pt-0 sm:pt-28 lg:pt-28">
           {/* Centered full-bleed image */}
           <div className="absolute inset-0 h-full w-full">
             <img
               src={heroImage}
               alt="IKKA hero"
-              className="h-full w-full object-cover object-center transition-transform duration-700 will-change-transform"
+              className="block w-full h-auto max-h-[30vh] sm:h-full sm:max-h-none sm:object-cover sm:object-center transition-transform duration-700 will-change-transform"
             />
           </div>
 
           {/* Content overlay: text block positioned left-of-center */}
-          <div className="relative z-10 min-h-[110vh] lg:min-h-[120vh] pt-28 lg:pt-40">
+          <div className="relative z-10 pt-8 sm:min-h-[110vh] lg:min-h-[120vh] sm:pt-28 lg:pt-40">
             <div className="container mx-auto px-6 lg:px-12 relative h-full">
-              <div className="absolute left-6 lg:left-20 top-1/2 lg:top-[58%] -translate-y-1/2 max-w-3xl">
+              <div className="absolute left-6 lg:left-20 top-0 -translate-y-0 sm:top-1/2 sm:-translate-y-1/2 lg:top-[58%] max-w-3xl">
                 <motion.h1
                   initial={{ y: 48, opacity: 0 }}
                   animate={heroLoaded ? { y: 0, opacity: 1 } : {}}
                   transition={{ duration: 0.9, ease: "easeOut" }}
-                  className="font-black tracking-tight text-white leading-[0.85] -mb-2 text-[10rem] sm:text-[9rem] md:text-[14rem] lg:text-[16rem]"
+                  className="font-black tracking-tight text-white leading-[0.85] -mb-2 text-[2.2rem] xs:text-[3.2rem] sm:text-[5rem] md:text-[10rem] lg:text-[16rem]"
                   style={{ lineHeight: 0.9 }}
                 >
                   IKKA
                 </motion.h1>
 
                 <p
-                  className={`mt-4 text-2xl lg:text-3xl font-bold text-red-800 uppercase tracking-widest transition-all duration-700 ${
+                  className={`mt-4 text-base xs:text-lg sm:text-2xl lg:text-3xl font-bold text-red-800 uppercase tracking-widest transition-all duration-700 ${
                     heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   }`}
                 >
@@ -65,14 +65,14 @@ const Index2: React.FC = () => {
                 </p>
 
                 <div
-                  className={`mt-8 ${
+                  className={`mt-6 sm:mt-8 ${
                     heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                   } transition-all duration-700`}
                 >
                   <a
                     href="/store"
                     aria-label="Check out"
-                    className="cta-diagonal inline-block hover:text-black hover:bg-red-600 text-white rounded-md px-10 py-10 font-extrabold uppercase tracking-wider shadow-[0_10px_30px_rgba(220,38,38,0.18)] transition-colors duration-200 text-3xl lg:text-3xl text-center"
+                    className="cta-diagonal inline-block hover:text-black hover:bg-red-600 text-white rounded-md px-6 py-5 sm:px-10 sm:py-10 font-extrabold uppercase tracking-wider shadow-[0_10px_30px_rgba(220,38,38,0.18)] transition-colors duration-200 text-lg xs:text-xl sm:text-3xl lg:text-3xl text-center"
                   >
                     CHECK OUT
                   </a>
