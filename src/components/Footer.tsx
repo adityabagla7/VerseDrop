@@ -1,4 +1,18 @@
+
 import { Instagram, Twitter, Youtube, Music2 } from "lucide-react";
+
+
+// Pinterest logo SVG
+const PinterestIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.084 2.438 7.548 6.188 7.548 2.547 0 3.57-1.44 3.57-3.158 0-.772-.197-1.963-.509-2.51-.134-.23-.342-.59-.523-.755-.162-.147-.393-.482-.01-.492.364-.009.623.336.797.594.414.62.814 1.613.814 2.34 0 1.37-1.04 2.49-2.91 2.49-2.37 0-3.86-2.06-3.86-4.82 0-3.98 3.24-7.79 8.12-7.79 4.42 0 6.85 2.7 6.85 6.3 0 4.23-2.1 7.39-5.01 7.39-1.04 0-2.02-.56-2.36-1.19l-.64 2.44c-.19.74-.56 1.67-.83 2.24.62.18 1.28.28 1.97.28 5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+  </svg>
+);
 
 const SpotifyIcon = ({ className }: { className?: string }) => (
   <svg
@@ -18,15 +32,6 @@ const Footer = () => {
         {/* Social Links */}
         <div className="flex justify-center items-center space-x-8 mb-12">
           <a 
-            href="https://open.spotify.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-red-600 hover:text-white transition-colors"
-            aria-label="Spotify"
-          >
-            <SpotifyIcon className="w-10 h-10" />
-          </a>
-          <a 
             href="https://youtube.com" 
             target="_blank" 
             rel="noopener noreferrer"
@@ -34,15 +39,6 @@ const Footer = () => {
             aria-label="YouTube"
           >
             <Youtube className="w-10 h-10" strokeWidth={2.5} />
-          </a>
-          <a 
-            href="https://soundcloud.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-red-600 hover:text-white transition-colors"
-            aria-label="SoundCloud"
-          >
-            <Music2 className="w-10 h-10" strokeWidth={2.5} />
           </a>
           <a 
             href="https://instagram.com" 
@@ -58,9 +54,18 @@ const Footer = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="text-red-600 hover:text-white transition-colors"
-            aria-label="X (Twitter)"
+            aria-label="Twitter"
           >
             <Twitter className="w-10 h-10" strokeWidth={2.5} />
+          </a>
+          <a 
+            href="https://pinterest.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-red-600 hover:text-white transition-colors"
+            aria-label="Pinterest"
+          >
+            <PinterestIcon className="w-10 h-10" />
           </a>
         </div>
 
@@ -82,7 +87,7 @@ const Footer = () => {
           </a>
           <span className="text-red-600/50">|</span>
           <a href="/refund" className="text-red-600 hover:text-white transition-colors">
-            Refund & Returns Policy
+            Refunds & Returns Policy
           </a>
           <span className="text-red-600/50">|</span>
           <a href="/disclaimer" className="text-red-600 hover:text-white transition-colors">
@@ -97,7 +102,6 @@ const Footer = () => {
         {/* Copyright */}
         <div className="text-center text-lg font-bold">
           <p className="text-red-600">© Copyright 2025 Versedrop</p>
-          <p className="text-red-600/80 mt-3">Follow us</p>
         </div>
       </div>
     </footer>

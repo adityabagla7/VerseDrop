@@ -1,9 +1,11 @@
 import { ShoppingCart, Menu, ChevronDown, Search, LogIn } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isArtistsOpen, setIsArtistsOpen] = useState(false);
+  const artistsRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -28,6 +30,31 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  // Close artists dropdown when clicking outside or pressing Escape
+  useEffect(() => {
+    const handleOutside = (e: MouseEvent | TouchEvent) => {
+      const node = artistsRef.current;
+      if (!node) return;
+      const target = e.target as Node;
+      if (!node.contains(target)) {
+        setIsArtistsOpen(false);
+      }
+    };
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsArtistsOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("touchstart", handleOutside);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("touchstart", handleOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, []);
 
   return (
     <>
@@ -58,12 +85,38 @@ const Header = () => {
               >
                 Store
               </Link>
-              <button className="flex items-center space-x-2 transition hover:text-red-700 hover:underline decoration-2 underline-offset-4">
-                <span className="uppercase">Artists</span>
-                <ChevronDown className="w-5 h-5" />
-              </button>
+              <div ref={artistsRef} className="relative">
+                <button
+                  aria-haspopup="true"
+                  aria-expanded={isArtistsOpen}
+                  onClick={() => setIsArtistsOpen((v) => !v)}
+                  className="flex items-center space-x-2 transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
+                >
+                  <span className="uppercase">Artists</span>
+                  <ChevronDown className="w-5 h-5" />
+                </button>
+
+                {/* Dropdown (desktop) - controlled by state to avoid hover gap closing */}
+                <div
+                  className={`absolute left-0 mt-1 w-48 bg-black border border-red-600/20 rounded-md shadow-lg transition-all duration-150 ${
+                    isArtistsOpen
+                      ? "opacity-100 scale-100 pointer-events-auto"
+                      : "opacity-0 scale-95 pointer-events-none"
+                  }`}
+                >
+                  <nav className="flex flex-col py-2">
+                    <Link
+                      to="/IKKA"
+                      className="px-4 py-2 text-white hover:bg-red-600 hover:text-black transition-colors"
+                    >
+                      IKKA
+                    </Link>
+                    {/* add additional artists here */}
+                  </nav>
+                </div>
+              </div>
               <a
-                href="#contact"
+                href="/Contact"
                 className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
               >
                 Contact Us
@@ -118,14 +171,19 @@ const Header = () => {
                 >
                   Store
                 </Link>
+                <div>
+                  <span className="block font-semibold">Artists</span>
+                  <div className="pl-3 mt-2 flex flex-col">
+                    <Link
+                      to="/IKKA"
+                      className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
+                    >
+                      IKKA
+                    </Link>
+                  </div>
+                </div>
                 <a
-                  href="#artists"
-                  className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-                >
-                  Artists
-                </a>
-                <a
-                  href="#contact"
+                  href="/Contact"
                   className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
                 >
                   Contact Us
