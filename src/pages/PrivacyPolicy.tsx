@@ -310,7 +310,7 @@ const PrivacyPolicy = () => {
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="mx-auto max-w-6xl prose prose-invert">
-          <h1>Privacy Policy</h1>
+          <h1 className="text-4xl font-bold">Privacy Policy</h1>
           <p className="lead">Effective date: 2025-10-01</p>
           <pre className="whitespace-pre-wrap text-base">{policyText}</pre>
         </div>

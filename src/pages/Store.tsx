@@ -4,14 +4,14 @@ import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const categories = ["All", "Hoodies", "T-shirts", "Vinyls"] as const;
+const categories = ["All", "Hoodies", "T-shirts"] as const;
 
 type Category = (typeof categories)[number];
 
 type SortOption = "alphabetical" | "price-high-low" | "price-low-high";
 
 const heroImage =
-  "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=2000&q=80";
+  "src/assets/storehero.jpeg";
 
 export const merchGrid = [
   {
@@ -46,22 +46,22 @@ export const merchGrid = [
     image:
       "https://images.unsplash.com/photo-1484519332611-516457305ff6?auto=format&fit=crop&w=900&q=80",
   },
-  {
-    id: "vinyl-hologram",
-    name: "Hologram Nights Vinyl",
-    price: "₹4,900",
-    category: "Vinyls",
-    image:
-      "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: "vinyl-aurora",
-    name: "Aurora Live Sessions",
-    price: "₹4,100",
-    category: "Vinyls",
-    image:
-      "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80",
-  },
+  // {
+  //   id: "vinyl-hologram",
+  //   name: "Hologram Nights Vinyl",
+  //   price: "₹4,900",
+  //   category: "Vinyls",
+  //   image:
+  //     "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80",
+  // },
+  // {
+  //   id: "vinyl-aurora",
+  //   name: "Aurora Live Sessions",
+  //   price: "₹4,100",
+  //   category: "Vinyls",
+  //   image:
+  //     "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80",
+  // },
 ] as const;
 
 const Store = () => {
@@ -129,39 +129,44 @@ const Store = () => {
     <div className="min-h-screen bg-black text-white">
       <Header />
       <main>
-        <section className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden py-24">
-        <div className="absolute inset-0 w-screen">
-          <img
-            src={heroImage}
-            alt="Concert crowd"
-            className="h-full w-full object-cover animate-slide-in-right"
-            style={{ animationFillMode: "forwards" }}
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/30 to-white/50" />
-
-        <div className="relative flex w-full max-w-5xl flex-col items-center text-center px-4 sm:px-10">
-          <div className="relative">
-            <div className="text-[18vw] font-black leading-none tracking-[0.12em] text-transparent sm:text-[12vw] lg:text-[9vw]">
-              <motion.span
-                initial={{ y: 48, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.9, ease: "easeOut" }}
-                className="block bg-[image:var(--hero-img)] bg-cover bg-center bg-no-repeat bg-clip-text text-transparent drop-shadow-[0_15px_45px_rgba(0,0,0,0.9)]"
-                style={
-                  {
-                    "--hero-img": `url(${heroImage})`,
-                  } as CSSProperties
-                }
-              >
-                MERCHANDISE
-              </motion.span>
-            </div>
-            <div className="absolute inset-0 -z-10 blur-[120px] opacity-70">
-              <div className="h-full w-full bg-gradient-to-r from-[#f97316]/60 via-transparent to-[#f97316]/60" />
-            </div>
+        <section className="relative isolate flex min-h-[60vh] sm:min-h-[80vh] lg:min-h-[90vh] items-center justify-center overflow-hidden py-12 sm:py-20 lg:py-24">
+          <div className="absolute inset-0 w-full h-full">
+            <img
+              src={heroImage}
+              alt="Concert crowd"
+              className="h-full w-full object-cover animate-slide-in-right"
+              style={{ animationFillMode: "forwards" }}
+            />
           </div>
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/30 to-white/50" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative flex w-full max-w-xl flex-col items-center text-center px-2 xs:px-4 sm:px-10"
+          >
+            <div className="relative">
+              <div className="text-[14vw] xs:text-[16vw] sm:text-[12vw] lg:text-[9vw] font-black leading-none tracking-[0.12em] text-transparent">
+                <motion.span
+                  initial={{ y: 48, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  className="block bg-[image:var(--hero-img)] bg-cover bg-center bg-no-repeat bg-clip-text text-transparent drop-shadow-[0_8px_24px_rgba(0,0,0,0.7)]"
+                  style={
+                    {
+                      "--hero-img": `url(${heroImage})`,
+                    } as CSSProperties
+                  }
+                >
+                  STORE
+                </motion.span>
+              </div>
+              <div className="absolute inset-0 -z-10 blur-[80px] sm:blur-[120px] opacity-70">
+                <div className="h-full w-full bg-gradient-to-r from-[#f97316]/60 via-transparent to-[#f97316]/60" />
+              </div>
+            </div>
+          </motion.div>
         </section>
 
         <section className="relative z-10 w-full pb-24">

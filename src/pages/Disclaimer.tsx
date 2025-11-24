@@ -56,7 +56,7 @@ const Disclaimer = () => {
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="mx-auto max-w-6xl prose prose-invert">
-          <h1>Disclaimer</h1>
+          <h1 className="text-4xl font-bold">Disclaimer</h1>
           <pre className="whitespace-pre-wrap text-base">{disclaimerText}</pre>
         </div>
       </main>

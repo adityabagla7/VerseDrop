@@ -61,7 +61,7 @@ const Refund = () => {
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="mx-auto max-w-6xl prose prose-invert">
-          <h1>Refunds & Returns Policy</h1>
+          <h1 className="text-4xl font-bold">Refunds & Returns Policy</h1>
           <pre className="whitespace-pre-wrap text-base">{refundText}</pre>
         </div>
       </main>

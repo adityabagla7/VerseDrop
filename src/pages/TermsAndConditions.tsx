@@ -208,7 +208,7 @@ const TermsAndConditions = () => {
       <Header />
       <main className="flex-1 py-16 px-4">
         <div className="mx-auto max-w-6xl prose prose-invert">
-          <h1>Terms and Conditions</h1>
+          <h1 className="text-4xl font-bold">Terms and Conditions</h1>
           <p className="lead">Last updated: 2025-10-01</p>
           <pre className="whitespace-pre-wrap text-base">{termsText}</pre>
         </div>

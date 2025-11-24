@@ -141,12 +141,12 @@ const Header = () => {
             </div>
 
 
-            {/* Right Actions */}
+            {/* Right Actions: Only Cart on mobile, all on desktop */}
             <div className="flex items-center space-x-6 text-white">
-              <button className="transition hover:text-red-700">
+              {/* <button className="transition hover:text-red-700 hidden lg:block">
                 <Search className="w-8 h-8" aria-label="Search" />
-              </button>
-              <button className="transition hover:text-red-700">
+              </button> */}
+              <button className="transition hover:text-red-700 hidden lg:block">
                 <LogIn className="w-8 h-8" aria-label="Login" />
               </button>
               <button className="transition hover:text-red-700">
@@ -188,6 +188,15 @@ const Header = () => {
                 >
                   Contact Us
                 </a>
+                {/* Mobile Only: Login (Search commented out) */}
+                <div className="flex space-x-6 pt-2">
+                  {/* <button className="transition hover:text-red-700">
+                    <Search className="w-7 h-7" aria-label="Search" />
+                  </button> */}
+                  <button className="transition hover:text-red-700">
+                    <LogIn className="w-7 h-7" aria-label="Login" />
+                  </button>
+                </div>
               </div>
             </nav>
           )}
