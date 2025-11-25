@@ -116,7 +116,7 @@ const Footer = () => {
           <span className="text-red-600/50">|</span>
           <a href="/contact" className="text-red-600 hover:text-white transition-colors">
             Contact Us
-          </a>
+          </Link>
         </nav>
 
         {/* Copyright */}

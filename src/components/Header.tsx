@@ -1,60 +1,31 @@
-import { ShoppingCart, Menu, ChevronDown, Search, LogIn } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { ShoppingCart, Menu, ChevronDown, LogIn, LogOut, User } from "lucide-react";
+import { Button } from "./ui/button";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isArtistsOpen, setIsArtistsOpen] = useState(false);
-  const artistsRef = useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Show header when at top of page
-      if (currentScrollY < 10) {
-        setIsVisible(true);
-      } 
-      // Hide header when scrolling down, show when scrolling up
-      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  // Close artists dropdown when clicking outside or pressing Escape
-  useEffect(() => {
-    const handleOutside = (e: MouseEvent | TouchEvent) => {
-      const node = artistsRef.current;
-      if (!node) return;
-      const target = e.target as Node;
-      if (!node.contains(target)) {
-        setIsArtistsOpen(false);
-      }
-    };
-
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsArtistsOpen(false);
-    };
-
-    document.addEventListener("mousedown", handleOutside);
-    document.addEventListener("touchstart", handleOutside);
-    document.addEventListener("keydown", handleKey);
-    return () => {
-      document.removeEventListener("mousedown", handleOutside);
-      document.removeEventListener("touchstart", handleOutside);
-      document.removeEventListener("keydown", handleKey);
-    };
-  }, []);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <>
@@ -72,55 +43,20 @@ const Header = () => {
         <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-24">
             {/* Left Navigation */}
-            <nav className="hidden lg:flex items-center space-x-10 text-xl font-bold text-white tracking-wide uppercase">
-              <Link
-                to="/"
-                className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-              >
+            <nav className="hidden lg:flex items-center space-x-8 text-sm">
+              <Link to="/" className="text-foreground hover:text-accent transition-colors">
                 Home
               </Link>
-              <Link
-                to="/store"
-                className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-              >
+              <a href="#store" className="text-foreground hover:text-accent transition-colors">
                 Store
-              </Link>
-              <div ref={artistsRef} className="relative">
-                <button
-                  aria-haspopup="true"
-                  aria-expanded={isArtistsOpen}
-                  onClick={() => setIsArtistsOpen((v) => !v)}
-                  className="flex items-center space-x-2 transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-                >
-                  <span className="uppercase">Artists</span>
-                  <ChevronDown className="w-5 h-5" />
-                </button>
-
-                {/* Dropdown (desktop) - controlled by state to avoid hover gap closing */}
-                <div
-                  className={`absolute left-0 mt-1 w-48 bg-black border border-red-600/20 rounded-md shadow-lg transition-all duration-150 ${
-                    isArtistsOpen
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 scale-95 pointer-events-none"
-                  }`}
-                >
-                  <nav className="flex flex-col py-2">
-                    <Link
-                      to="/IKKA"
-                      className="px-4 py-2 text-white hover:bg-red-600 hover:text-black transition-colors"
-                    >
-                      IKKA
-                    </Link>
-                    {/* add additional artists here */}
-                  </nav>
-                </div>
-              </div>
-              <a
-                href="/Contact"
-                className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-              >
-                Contact Us
               </a>
+              <button className="flex items-center space-x-1 text-foreground hover:text-accent transition-colors">
+                <span>Artists</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <Link to="/contact-us" className="text-foreground hover:text-accent transition-colors">
+                Contact Us
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -152,51 +88,111 @@ const Header = () => {
               <button className="transition hover:text-red-700">
                 <ShoppingCart className="w-8 h-8" aria-label="Cart" />
               </button>
+              
+              {currentUser ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="hidden lg:flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage src={currentUser.photoURL || undefined} alt={currentUser.displayName || "User"} />
+                        <AvatarFallback>
+                          {currentUser.displayName?.charAt(0).toUpperCase() || currentUser.email?.charAt(0).toUpperCase() || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium">{currentUser.displayName || "User"}</p>
+                        <p className="text-xs text-muted-foreground">{currentUser.email}</p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/" className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link to="/login">
+                  <Button 
+                    variant="outline" 
+                    className="hidden lg:flex items-center space-x-2 border-2 hover:bg-accent/5"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Login</span>
+                  </Button>
+                </Link>
+              )}
+              
+              <Button 
+                variant="default" 
+                className="hidden lg:block bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6"
+              >
+                Search Products
+              </Button>
             </div>
           </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <nav className="lg:hidden py-4 border-t border-red-600/20">
-              <div className="flex flex-col space-y-4 text-lg font-semibold text-white">
-                <Link
-                  to="/"
-                  className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-                >
+            <nav className="lg:hidden py-4 border-t border-border">
+              <div className="flex flex-col space-y-4">
+                <Link to="/" className="text-foreground hover:text-accent transition-colors">
                   Home
                 </Link>
-                <Link
-                  to="/store"
-                  className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-                >
+                <a href="#store" className="text-foreground hover:text-accent transition-colors">
                   Store
-                </Link>
-                <div>
-                  <span className="block font-semibold">Artists</span>
-                  <div className="pl-3 mt-2 flex flex-col">
-                    <Link
-                      to="/IKKA"
-                      className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-                    >
-                      IKKA
-                    </Link>
-                  </div>
-                </div>
-                <a
-                  href="/Contact"
-                  className="transition hover:text-red-700 hover:underline decoration-2 underline-offset-4"
-                >
-                  Contact Us
                 </a>
-                {/* Mobile Only: Login (Search commented out) */}
-                <div className="flex space-x-6 pt-2">
-                  {/* <button className="transition hover:text-red-700">
-                    <Search className="w-7 h-7" aria-label="Search" />
-                  </button> */}
-                  <button className="transition hover:text-red-700">
-                    <LogIn className="w-7 h-7" aria-label="Login" />
-                  </button>
-                </div>
+                <a href="#artists" className="text-foreground hover:text-accent transition-colors">
+                  Artists
+                </a>
+                <Link to="/contact-us" className="text-foreground hover:text-accent transition-colors">
+                  Contact Us
+                </Link>
+                {currentUser ? (
+                  <div className="flex flex-col space-y-2 mt-2">
+                    <div className="flex items-center space-x-2 px-2 py-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={currentUser.photoURL || undefined} alt={currentUser.displayName || "User"} />
+                        <AvatarFallback>
+                          {currentUser.displayName?.charAt(0).toUpperCase() || currentUser.email?.charAt(0).toUpperCase() || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <p className="text-sm font-medium">{currentUser.displayName || "User"}</p>
+                        <p className="text-xs text-muted-foreground">{currentUser.email}</p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      className="w-full flex items-center justify-center space-x-2 border-2 hover:bg-accent/5"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Logout</span>
+                    </Button>
+                  </div>
+                ) : (
+                  <Link to="/login">
+                    <Button 
+                      variant="outline" 
+                      className="w-full flex items-center justify-center space-x-2 border-2 hover:bg-accent/5 mt-2"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      <span>Login</span>
+                    </Button>
+                  </Link>
+                )}
               </div>
             </nav>
           )}
