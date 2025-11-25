@@ -1,4 +1,5 @@
 import { Instagram, Twitter, Linkedin, Share2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -49,29 +50,29 @@ const Footer = () => {
 
         {/* Footer Links */}
         <nav className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
-          <a href="/" className="hover:text-accent transition-colors">
+          <Link to="/" className="hover:text-accent transition-colors">
             Home
-          </a>
+          </Link>
           <span className="text-primary-foreground/50">|</span>
-          <a href="/privacy-policy" className="hover:text-accent transition-colors">
+          <Link to="/privacy-policy" className="hover:text-accent transition-colors">
             Privacy Policy
-          </a>
+          </Link>
           <span className="text-primary-foreground/50">|</span>
           <a href="/terms" className="hover:text-accent transition-colors">
             Terms and Condition
           </a>
           <span className="text-primary-foreground/50">|</span>
-          <a href="/refund" className="hover:text-accent transition-colors">
+          <Link to="/refund-policy" className="hover:text-accent transition-colors">
             Refund & Returns Policy
-          </a>
+          </Link>
           <span className="text-primary-foreground/50">|</span>
           <a href="/disclaimer" className="hover:text-accent transition-colors">
             Disclaimer
           </a>
           <span className="text-primary-foreground/50">|</span>
-          <a href="/contact" className="hover:text-accent transition-colors">
+          <Link to="/contact-us" className="hover:text-accent transition-colors">
             Contact Us
-          </a>
+          </Link>
         </nav>
 
         {/* Copyright */}
