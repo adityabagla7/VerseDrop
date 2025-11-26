@@ -15,6 +15,7 @@ import {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
