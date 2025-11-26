@@ -13,6 +13,33 @@ const Login = () => {
   const { signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
 
+  const getErrorMessage = (error: any): string => {
+    const errorCode = error?.code || "";
+    const errorMessage = error?.message || "";
+
+    // Check for specific Firebase error codes that indicate user doesn't exist or needs to sign up
+    if (
+      errorCode === "auth/user-not-found" ||
+      errorCode === "auth/wrong-password" ||
+      errorMessage.toLowerCase().includes("user-not-found") ||
+      errorMessage.toLowerCase().includes("invalid") ||
+      errorMessage.toLowerCase().includes("no user")
+    ) {
+      return "Please signup if you're visiting for the first time";
+    }
+
+    // Handle popup closed by user
+    if (
+      errorCode === "auth/popup-closed-by-user" ||
+      errorMessage.toLowerCase().includes("popup")
+    ) {
+      return "Sign-in popup was closed. Please try again.";
+    }
+
+    // Return the original error message if it's a different type of error
+    return errorMessage || "Failed to sign in with Google";
+  };
+
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
@@ -20,7 +47,8 @@ const Login = () => {
       toast.success("Successfully signed in with Google!");
       navigate("/");
     } catch (error: any) {
-      toast.error(error.message || "Failed to sign in with Google");
+      const friendlyMessage = getErrorMessage(error);
+      toast.error(friendlyMessage);
     } finally {
       setLoading(false);
     }

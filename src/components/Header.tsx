@@ -48,14 +48,14 @@ const Header = () => {
               <Link to="/" className="text-foreground hover:text-accent transition-colors">
                 Home
               </Link>
-              <a href="#store" className="text-foreground hover:text-accent transition-colors">
+              <a href="/store" className="text-foreground hover:text-accent transition-colors">
                 Store
               </a>
               <button className="flex items-center space-x-1 text-foreground hover:text-accent transition-colors">
                 <span>Artists</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
-              <Link to="/contact-us" className="text-foreground hover:text-accent transition-colors">
+              <Link to="/contact" className="text-foreground hover:text-accent transition-colors">
                 Contact Us
               </Link>
             </nav>
@@ -126,8 +126,8 @@ const Header = () => {
               ) : (
                 <Link to="/login">
                   <Button 
-                    variant="outline" 
-                    className="hidden lg:flex items-center space-x-2 border-2 hover:bg-accent/5"
+                    variant="default" 
+                    className="hidden lg:flex items-center space-x-2 bg-black text-white border-2 border-white/20 hover:bg-gray-900 hover:text-white"
                   >
                     <LogIn className="w-4 h-4" />
                     <span>Login</span>
@@ -151,13 +151,13 @@ const Header = () => {
                 <Link to="/" className="text-foreground hover:text-accent transition-colors">
                   Home
                 </Link>
-                <a href="#store" className="text-foreground hover:text-accent transition-colors">
+                <a href="/store" className="text-foreground hover:text-accent transition-colors">
                   Store
                 </a>
-                <a href="#artists" className="text-foreground hover:text-accent transition-colors">
+                <a href="/artists" className="text-foreground hover:text-accent transition-colors">
                   Artists
                 </a>
-                <Link to="/contact-us" className="text-foreground hover:text-accent transition-colors">
+                <Link to="/contact" className="text-foreground hover:text-accent transition-colors">
                   Contact Us
                 </Link>
                 {currentUser ? (
@@ -186,8 +186,8 @@ const Header = () => {
                 ) : (
                   <Link to="/login">
                     <Button 
-                      variant="outline" 
-                      className="w-full flex items-center justify-center space-x-2 border-2 hover:bg-accent/5 mt-2"
+                      variant="default" 
+                      className="w-full flex items-center justify-center space-x-2 bg-black text-white border-2 border-white/20 hover:bg-gray-900 hover:text-white mt-2"
                     >
                       <LogIn className="w-4 h-4" />
                       <span>Login</span>
