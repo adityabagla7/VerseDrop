@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const { totalItems } = useCart();
 
   const handleLogout = async () => {
     try {
@@ -86,9 +88,14 @@ const Header = () => {
               <button className="transition hover:text-red-700 hidden lg:block">
                 <LogIn className="w-8 h-8" aria-label="Login" />
               </button>
-              <button className="transition hover:text-red-700">
+              <Link to="/store" className="relative transition hover:text-red-700">
                 <ShoppingCart className="w-8 h-8" aria-label="Cart" />
-              </button>
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 rounded-full bg-red-600 px-2 py-[2px] text-xs font-bold leading-none text-white">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
               
               {currentUser ? (
                 <DropdownMenu>
