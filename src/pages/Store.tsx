@@ -1,10 +1,12 @@
 
+import { Link } from "react-router-dom";
 import { useMemo, useState, useEffect, useRef, type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import storeHero from "@/assets/storehero.jpeg";
+import { products } from "@/data/products";
 
 const categories = ["All", "Hoodies", "T-shirts"] as const;
 
@@ -13,57 +15,6 @@ type Category = (typeof categories)[number];
 type SortOption = "alphabetical" | "price-high-low" | "price-low-high";
 
 const heroImage = storeHero;
-
-export const merchGrid = [
-  {
-    id: "hoodie-midnight",
-    name: "Midnight Signal Hoodie",
-    price: "₹9,000",
-    category: "Hoodies",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: "hoodie-amber",
-    name: "Amber Pulse Hoodie",
-    price: "₹6,000",
-    category: "Hoodies",
-    image:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: "tee-neon",
-    name: "Neon Echo Tee",
-    price: "₹5,000",
-    category: "T-shirts",
-    image:
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    id: "tee-slate",
-    name: "Slate Frequency Tee",
-    price: "₹4,800",
-    category: "T-shirts",
-    image:
-      "https://images.unsplash.com/photo-1484519332611-516457305ff6?auto=format&fit=crop&w=900&q=80",
-  },
-  // {
-  //   id: "vinyl-hologram",
-  //   name: "Hologram Nights Vinyl",
-  //   price: "₹4,900",
-  //   category: "Vinyls",
-  //   image:
-  //     "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80",
-  // },
-  // {
-  //   id: "vinyl-aurora",
-  //   name: "Aurora Live Sessions",
-  //   price: "₹4,100",
-  //   category: "Vinyls",
-  //   image:
-  //     "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80",
-  // },
-] as const;
 
 const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>("All");
@@ -89,15 +40,19 @@ const Store = () => {
   }, [isSortOpen]);
 
   // Helper function to extract price as number
-  const getPriceNumber = (priceString: string): number => {
-    return parseInt(priceString.replace("$", ""), 10);
+  const formatPrice = (price: number): string => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(price);
   };
 
   const filteredAndSortedMerch = useMemo(() => {
     // First filter by category
     let filtered = selectedCategory === "All" 
-      ? [...merchGrid] 
-      : merchGrid.filter((item) => item.category === selectedCategory);
+      ? [...products] 
+      : products.filter((item) => item.category === selectedCategory);
     
     // Then sort
     switch (sortOption) {
@@ -105,10 +60,10 @@ const Store = () => {
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case "price-high-low":
-        filtered.sort((a, b) => getPriceNumber(b.price) - getPriceNumber(a.price));
+        filtered.sort((a, b) => b.price - a.price);
         break;
       case "price-low-high":
-        filtered.sort((a, b) => getPriceNumber(a.price) - getPriceNumber(b.price));
+        filtered.sort((a, b) => a.price - b.price);
         break;
     }
     
@@ -258,25 +213,26 @@ const Store = () => {
 
           <div className="mt-10 grid gap-0 sm:grid-cols-2 lg:grid-cols-3 w-full">
             {filteredAndSortedMerch.map((item) => (
-              <article
-                key={item.id}
-                className="group relative overflow-hidden"
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-96 w-full object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/60 opacity-0 transition duration-500 group-hover:opacity-100" />
-                <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-                  <div className="translate-y-6 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                    <h3 className="text-lg font-black uppercase tracking-[0.2em] text-white">
-                      {item.name}
-                    </h3>
-                    <p className="mt-2 text-sm font-bold text-red-600">{item.price}</p>
+              <Link to={`/store/${item.id}`} key={item.id} className="contents">
+                <article
+                  className="group relative overflow-hidden cursor-pointer"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-96 w-full object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 transition duration-500 group-hover:opacity-100" />
+                  <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                    <div className="translate-y-6 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                      <h3 className="text-lg font-black uppercase tracking-[0.2em] text-white">
+                        {item.name}
+                      </h3>
+                      <p className="mt-2 text-sm font-bold text-red-600">{formatPrice(item.price)}</p>
+                    </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              </Link>
             ))}
           </div>
         </div>

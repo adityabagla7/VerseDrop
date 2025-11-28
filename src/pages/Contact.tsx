@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Phone, Mail } from "lucide-react";
+import contactHero from "@/assets/image.jpg";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -30,18 +31,29 @@ const Contact = () => {
       <Header />
       <main className="flex-1">
         {/* Keep existing hero UI */}
-        <section className="flex flex-col items-center justify-center py-20 px-4 text-center">
-          <h1 className="text-4xl lg:text-6xl font-extrabold mb-8 text-red-600">Contact Us</h1>
-          <p className="text-lg lg:text-2xl text-white/80 max-w-2xl mb-8">
-            Interested in partnering, collaborating, or have a question? Use the form below or email us at 
-            <a href="mailto:contact@versedrop.com" className="text-red-400 underline ml-1">contact@versedrop.com</a>.
-          </p>
-          <a
-            href="mailto:contact@versedrop.com"
-            className="inline-block bg-red-600 text-black hover:bg-red-700 rounded-md px-10 py-4 font-bold text-xl transition-colors duration-200 mb-8"
-          >
-            PARTNER WITH US
-          </a>
+        <section className="relative flex flex-col items-center justify-center py-24 px-4 text-center overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src={contactHero}
+              alt="Contact hero background"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-[1px]" />
+          <div className="relative z-10 max-w-3xl">
+            <h1 className="text-4xl lg:text-6xl font-extrabold mb-8 text-white tracking-tight">Contact Us</h1>
+            <p className="text-lg lg:text-2xl text-white/80 max-w-2xl mx-auto mb-8">
+              Interested in partnering, collaborating, or have a question? Use the form below or email us at{" "}
+              <a href="mailto:contact@versedrop.com" className="text-red-400 underline ml-1">contact@versedrop.com</a>.
+            </p>
+            <a
+              href="mailto:contact@versedrop.com"
+              className="inline-block bg-red-600 text-black hover:bg-red-700 rounded-md px-10 py-4 font-bold text-xl transition-colors duration-200 mb-2"
+            >
+              PARTNER WITH US
+            </a>
+            <p className="text-sm uppercase tracking-[0.4em] text-white/60">Let’s build culture together</p>
+          </div>
         </section>
 
         {/* Incoming content: form + contact cards + about, adapted to match current UI */}

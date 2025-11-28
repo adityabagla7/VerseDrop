@@ -75,8 +75,7 @@ const Login = () => {
               {/* Google Login Button */}
               <Button
                 type="button"
-                variant="outline"
-                className="w-full h-14 text-base font-medium border-2 hover:bg-accent/5"
+                className="w-full h-14 text-base font-semibold bg-black text-white border border-white/20 hover:bg-black/80"
                 onClick={handleGoogleLogin}
                 disabled={loading}
               >

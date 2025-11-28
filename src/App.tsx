@@ -6,8 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { CartProvider } from "@/contexts/CartContext";
 import Index from "./pages/Index";
 import Store from "./pages/Store";
+import ProductDetail from "./pages/ProductDetail";
 import Contact from "./pages/Contact";
 import IKKA from "./pages/IKKA";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -25,10 +27,12 @@ const App = () => (
       <Sonner />
 
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/store" element={<Store />} />
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/store/:productId" element={<ProductDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/ikka" element={<IKKA />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -38,9 +42,10 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             {/* Catch-all */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
